@@ -1,4 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('dashboard')
-export class DashboardController {}
+export class DashboardController {
+    @Get()
+    index() {
+        return "Dashboard Page";
+    }
+}
