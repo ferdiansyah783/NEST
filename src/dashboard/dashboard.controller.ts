@@ -45,6 +45,8 @@ export class DashboardController {
     otherUser(@Param() param){
         const dataUser = this.data.filter(val => val['id'] == param.id);
         
+        console.log(param);
+        
         if(!dataUser.length) {
             return "Not found";
         }
@@ -54,5 +56,4 @@ export class DashboardController {
     
 }
 
-console.log('tester');
 
