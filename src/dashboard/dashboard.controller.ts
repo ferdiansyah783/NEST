@@ -1,21 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Res } from '@nestjs/common';
+import { Response } from 'express';
+import { DashboardService } from './dashboard.service';
 
 @Controller('dashboard')
 export class DashboardController {
-    public data = [
-        {
-            id: 1,
-            nama: 'ferdi'
-        },
-        {
-            id: 2,
-            nama: 'anang'
-        },
-        {
-            id: 3,
-            nama: 'havis'
-        }
-    ]
+    constructor(private dashboardService: DashboardService) {}
 
     @Get()
     index() {
@@ -38,22 +27,18 @@ export class DashboardController {
 
     @Get('user')
     user() {
-        return this.data;
+        return this.dashboardService.users;
     }
 
     @Get('user/:id')
-    otherUser(@Param() param){
-        const dataUser = this.data.filter(val => val['id'] == param.id);
+    otherUser(@Param('id', ParseIntPipe) param: number, @Res() res: Response){
+        const dataUsers = this.dashboardService.findDataById(param);
         
-        console.log(param);
-        
-        if(!dataUser.length) {
-            return "Not found";
+        if(dataUsers) {
+            res.send(dataUsers);
+        } else {
+            res.status(400).send({message: "User Not Found!!"});
         }
-        
-        return dataUser;
     }
     
 }
-
-
